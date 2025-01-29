@@ -42,3 +42,7 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest
+
+    - name: Run tests
+      run: |
+        pytest
