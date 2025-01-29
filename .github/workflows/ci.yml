@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Add this to enable manual triggers
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,6 +20,8 @@ jobs:
 
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest  # Add flake8 and pytest here
         pip install -r requirements.txt
 
     - name: Lint and Test
@@ -28,16 +30,16 @@ jobs:
         pytest
 
   docker:
-    needs: build  # Add this to ensure docker job runs after successful build
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3  # Add this to get your code for docker build
+    - uses: actions/checkout@v3
 
     - name: Log in to DockerHub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t ratbudocker69/fastapi-app:latest .
-        docker push ratbudocker69/fastapi-app:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest
