@@ -3,7 +3,6 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.models import Item
 from app.database import SessionLocal, engine
-from app import crud, schemas
 
 # Create the database tables for testing
 Item.metadata.create_all(bind=engine)
