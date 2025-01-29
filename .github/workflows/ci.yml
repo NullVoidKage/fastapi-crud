@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # Add this to enable manual triggers
 
 jobs:
   build:
@@ -27,13 +28,16 @@ jobs:
         pytest
 
   docker:
+    needs: build  # Add this to ensure docker job runs after successful build
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3  # Add this to get your code for docker build
+
     - name: Log in to DockerHub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t your-dockerhub-username/fastapi-app:latest .
-        docker push your-dockerhub-username/fastapi-app:latest
+        docker build -t ratbudocker69/fastapi-app:latest .
+        docker push ratbudocker69/fastapi-app:latest
