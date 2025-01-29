@@ -1,7 +1,6 @@
 from app import models, schemas
 from app.database import SessionLocal
 
-
 db = SessionLocal()
 
 

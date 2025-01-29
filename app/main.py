@@ -5,6 +5,7 @@ app = FastAPI()
 
 models.Base.metadata.create_all(bind=database.engine)
 
+
 @app.post("/items/", response_model=schemas.Item)
 def create_item(item: schemas.ItemCreate):
     return crud.create_item(item)
