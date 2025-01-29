@@ -1,7 +1,9 @@
 from app import models, schemas
 from app.database import SessionLocal
 
+
 db = SessionLocal()
+
 
 def create_item(item: schemas.ItemCreate):
     db_item = models.Item(**item.model_dump())
@@ -10,8 +12,10 @@ def create_item(item: schemas.ItemCreate):
     db.refresh(db_item)
     return db_item
 
+
 def get_item(item_id: int):
     return db.query(models.Item).filter(models.Item.id == item_id).first()
+
 
 def update_item(item_id: int, item: schemas.ItemUpdate):
     db_item = db.query(models.Item).filter(models.Item.id == item_id).first()
@@ -20,6 +24,7 @@ def update_item(item_id: int, item: schemas.ItemUpdate):
     db.commit()
     db.refresh(db_item)
     return db_item
+
 
 def delete_item(item_id: int):
     db_item = db.query(models.Item).filter(models.Item.id == item_id).first()
